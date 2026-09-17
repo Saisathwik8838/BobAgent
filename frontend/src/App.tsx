@@ -1,19 +1,25 @@
 import React, { useState, useEffect } from 'react';
+import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
 import { api } from './services/api';
 import { User, CandidateProfile, AuthResponse } from './types/auth';
-import { Navbar } from './components/Navbar';
-import { Sidebar, NavTab } from './components/Sidebar';
+import { Layout } from './components/Layout';
 import { Dashboard } from './pages/Dashboard';
 import { Profile } from './pages/Profile';
+import { ResumeHub } from './pages/ResumeHub';
+import { JobIntelligence } from './pages/JobIntelligence';
+import { Applications } from './pages/Applications';
+import { VectorRAG } from './pages/VectorRAG';
+import { AgentsStudio } from './pages/AgentsStudio';
+import { InterviewSimulator } from './pages/InterviewSimulator';
+import { EvalAnalytics } from './pages/EvalAnalytics';
 import { Login } from './pages/Login';
 import { Register } from './pages/Register';
-import { Construction, Sparkles } from 'lucide-react';
+import { Sparkles } from 'lucide-react';
 
 export const App: React.FC = () => {
   const [user, setUser] = useState<User | null>(null);
   const [profile, setProfile] = useState<CandidateProfile | null>(null);
   const [authView, setAuthView] = useState<'login' | 'register'>('login');
-  const [currentTab, setCurrentTab] = useState<NavTab>('dashboard');
   const [systemHealthy, setSystemHealthy] = useState<boolean>(false);
   const [loading, setLoading] = useState<boolean>(true);
 
@@ -93,47 +99,41 @@ export const App: React.FC = () => {
   }
 
   return (
-    <div className="min-h-screen bg-slate-950 flex flex-col text-slate-100">
-      <Navbar user={user} onLogout={handleLogout} systemHealthy={systemHealthy} />
-
-      <div className="flex-1 flex overflow-hidden">
-        <Sidebar currentTab={currentTab} onSelectTab={setCurrentTab} />
-
-        <main className="flex-1 overflow-y-auto p-6 md:p-8">
-          {currentTab === 'dashboard' && (
-            <Dashboard user={user} profile={profile} onNavigate={setCurrentTab} />
-          )}
-
-          {currentTab === 'profile' && (
-            <Profile
-              initialProfile={profile}
-              onProfileUpdated={(updated) => setProfile(updated)}
+    <BrowserRouter>
+      <Routes>
+        <Route
+          element={
+            <Layout
+              user={user}
+              onLogout={handleLogout}
+              systemHealthy={systemHealthy}
             />
-          )}
-
-          {currentTab !== 'dashboard' && currentTab !== 'profile' && (
-            <div className="max-w-3xl mx-auto glass-panel p-12 rounded-2xl text-center space-y-4 border border-slate-800">
-              <div className="w-12 h-12 rounded-2xl bg-indigo-500/10 border border-indigo-500/20 flex items-center justify-center text-indigo-400 mx-auto">
-                <Construction className="w-6 h-6" />
-              </div>
-              <h2 className="text-xl font-bold text-white capitalize">
-                {currentTab.replace('-', ' ')} Module
-              </h2>
-              <p className="text-sm text-slate-400 max-w-md mx-auto leading-relaxed">
-                This module is scheduled in the phased build roadmap. The foundation layer is verified, and Phase 2 (Resume & Job Management) is ready for implementation.
-              </p>
-              <div className="pt-2">
-                <button
-                  onClick={() => setCurrentTab('dashboard')}
-                  className="px-4 py-2 rounded-xl bg-slate-900 hover:bg-slate-800 text-xs font-medium text-slate-300 border border-slate-700"
-                >
-                  Return to Dashboard
-                </button>
-              </div>
-            </div>
-          )}
-        </main>
-      </div>
-    </div>
+          }
+        >
+          <Route path="/" element={<Navigate to="/dashboard" replace />} />
+          <Route
+            path="/dashboard"
+            element={<Dashboard user={user} profile={profile} />}
+          />
+          <Route
+            path="/profile"
+            element={
+              <Profile
+                initialProfile={profile}
+                onProfileUpdated={(updated) => setProfile(updated)}
+              />
+            }
+          />
+          <Route path="/resume-hub" element={<ResumeHub />} />
+          <Route path="/jobs" element={<JobIntelligence />} />
+          <Route path="/applications" element={<Applications />} />
+          <Route path="/rag" element={<VectorRAG />} />
+          <Route path="/agents" element={<AgentsStudio />} />
+          <Route path="/interview" element={<InterviewSimulator />} />
+          <Route path="/eval" element={<EvalAnalytics />} />
+          <Route path="*" element={<Navigate to="/dashboard" replace />} />
+        </Route>
+      </Routes>
+    </BrowserRouter>
   );
 };

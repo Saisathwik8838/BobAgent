@@ -1,15 +1,15 @@
 import React from 'react';
+import { useNavigate } from 'react-router-dom';
 import { User, CandidateProfile } from '../types/auth';
 import { ShieldCheck, Database, Cpu, CheckCircle2, ArrowRight, Sparkles } from 'lucide-react';
-import { NavTab } from '../components/Sidebar';
 
 interface DashboardProps {
   user: User;
   profile: CandidateProfile | null;
-  onNavigate: (tab: NavTab) => void;
 }
 
-export const Dashboard: React.FC<DashboardProps> = ({ user, profile, onNavigate }) => {
+export const Dashboard: React.FC<DashboardProps> = ({ user, profile }) => {
+  const navigate = useNavigate();
   const profileComplete = Boolean(profile?.headline && profile?.summary && profile?.location);
 
   return (
@@ -31,14 +31,14 @@ export const Dashboard: React.FC<DashboardProps> = ({ user, profile, onNavigate 
 
           <div className="flex flex-wrap gap-3 pt-2">
             <button
-              onClick={() => onNavigate('profile')}
+              onClick={() => navigate('/profile')}
               className="inline-flex items-center space-x-2 px-5 py-2.5 rounded-xl bg-indigo-600 hover:bg-indigo-500 text-white text-sm font-semibold transition-all shadow-lg shadow-indigo-600/25 active:scale-95"
             >
               <span>Manage Candidate Profile</span>
               <ArrowRight className="w-4 h-4" />
             </button>
             <button
-              onClick={() => onNavigate('jobs')}
+              onClick={() => navigate('/jobs')}
               className="inline-flex items-center space-x-2 px-5 py-2.5 rounded-xl bg-slate-900 hover:bg-slate-800 text-slate-300 border border-slate-700 text-sm font-medium transition-all"
             >
               <span>Explore Upcoming Pipeline</span>

@@ -1,4 +1,5 @@
 import React from 'react';
+import { NavLink } from 'react-router-dom';
 import {
   LayoutDashboard,
   UserCheck,
@@ -11,34 +12,17 @@ import {
   BarChart3,
 } from 'lucide-react';
 
-export type NavTab =
-  | 'dashboard'
-  | 'profile'
-  | 'resumes'
-  | 'jobs'
-  | 'applications'
-  | 'knowledge'
-  | 'agents'
-  | 'interviews'
-  | 'analytics'
-  | 'settings';
-
-interface SidebarProps {
-  currentTab: NavTab;
-  onSelectTab: (tab: NavTab) => void;
-}
-
-export const Sidebar: React.FC<SidebarProps> = ({ currentTab, onSelectTab }) => {
+export const Sidebar: React.FC = () => {
   const navItems = [
-    { id: 'dashboard' as NavTab, label: 'Dashboard', icon: LayoutDashboard, phase: 'Phase 1' },
-    { id: 'profile' as NavTab, label: 'Candidate Profile', icon: UserCheck, phase: 'Phase 1' },
-    { id: 'resumes' as NavTab, label: 'Resume Hub', icon: FileText, phase: 'Phase 2' },
-    { id: 'jobs' as NavTab, label: 'Job Intelligence', icon: Briefcase, phase: 'Phase 2' },
-    { id: 'applications' as NavTab, label: 'Applications', icon: Layers, phase: 'Phase 2' },
-    { id: 'knowledge' as NavTab, label: 'Vector RAG Base', icon: Database, phase: 'Phase 4' },
-    { id: 'agents' as NavTab, label: 'LangGraph Agents', icon: Bot, phase: 'Phase 7' },
-    { id: 'interviews' as NavTab, label: 'Interview Simulator', icon: MessageSquareCode, phase: 'Phase 10' },
-    { id: 'analytics' as NavTab, label: 'Eval & Analytics', icon: BarChart3, phase: 'Phase 11' },
+    { to: '/dashboard', label: 'Dashboard', icon: LayoutDashboard, tag: 'Overview' },
+    { to: '/profile', label: 'Candidate Profile', icon: UserCheck, tag: 'Baseline' },
+    { to: '/rag', label: 'Vector RAG Base', icon: Database, tag: 'RAG' },
+    { to: '/resume-hub', label: 'Resume Hub', icon: FileText, tag: 'Resumes' },
+    { to: '/jobs', label: 'Job Intelligence', icon: Briefcase, tag: 'Jobs' },
+    { to: '/applications', label: 'Applications', icon: Layers, tag: 'Kanban' },
+    { to: '/agents', label: 'LangGraph Agents', icon: Bot, tag: 'Agents' },
+    { to: '/interview', label: 'Interview Simulator', icon: MessageSquareCode, tag: 'Prep' },
+    { to: '/eval', label: 'Eval & Analytics', icon: BarChart3, tag: 'Metrics' },
   ];
 
   return (
@@ -49,27 +33,34 @@ export const Sidebar: React.FC<SidebarProps> = ({ currentTab, onSelectTab }) => 
         </div>
         {navItems.map((item) => {
           const Icon = item.icon;
-          const isActive = currentTab === item.id;
           return (
-            <button
-              key={item.id}
-              onClick={() => onSelectTab(item.id)}
-              className={`w-full flex items-center justify-between px-3 py-2.5 rounded-xl text-sm font-medium transition-all ${
-                isActive
-                  ? 'bg-indigo-600/15 text-indigo-300 border border-indigo-500/30 shadow-sm shadow-indigo-500/10'
-                  : 'text-slate-400 hover:text-slate-200 hover:bg-slate-900/60'
-              }`}
+            <NavLink
+              key={item.to}
+              to={item.to}
+              className={({ isActive }) =>
+                `w-full flex items-center justify-between px-3 py-2.5 rounded-xl text-sm font-medium transition-all ${
+                  isActive
+                    ? 'bg-indigo-600/15 text-indigo-300 border border-indigo-500/30 shadow-sm shadow-indigo-500/10'
+                    : 'text-slate-400 hover:text-slate-200 hover:bg-slate-900/60'
+                }`
+              }
             >
-              <div className="flex items-center space-x-3">
-                <Icon className={`w-4 h-4 ${isActive ? 'text-indigo-400' : 'text-slate-400'}`} />
-                <span>{item.label}</span>
-              </div>
-              <span className={`text-[10px] px-1.5 py-0.5 rounded font-mono ${
-                isActive ? 'bg-indigo-500/20 text-indigo-300' : 'text-slate-600 bg-slate-900'
-              }`}>
-                {item.phase}
-              </span>
-            </button>
+              {({ isActive }) => (
+                <>
+                  <div className="flex items-center space-x-3">
+                    <Icon className={`w-4 h-4 ${isActive ? 'text-indigo-400' : 'text-slate-400'}`} />
+                    <span>{item.label}</span>
+                  </div>
+                  <span
+                    className={`text-[10px] px-1.5 py-0.5 rounded font-mono ${
+                      isActive ? 'bg-indigo-500/20 text-indigo-300' : 'text-slate-600 bg-slate-900'
+                    }`}
+                  >
+                    {item.tag}
+                  </span>
+                </>
+              )}
+            </NavLink>
           );
         })}
       </div>
