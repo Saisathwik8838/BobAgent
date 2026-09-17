@@ -7,6 +7,7 @@ import httpx
 import numpy as np
 
 from app.core.config import settings
+from app.core.logging import logger
 
 
 class EmbeddingService:
@@ -20,11 +21,25 @@ class EmbeddingService:
         return embeddings[0]
 
     async def get_embeddings(self, texts: list[str]) -> list[list[float]]:
-        """Generate normalized embedding vectors for a batch of texts."""
+        """Generate normalized embedding vectors for a batch of texts with graceful fallback."""
         if self.provider == "openai" and settings.OPENAI_API_KEY:
-            return await self._get_openai_embeddings(texts)
+            try:
+                return await self._get_openai_embeddings(texts)
+            except Exception as e:
+                logger.warning(
+                    "OpenAI embeddings provider failed (e.g. quota, rate limit, network); falling back to local mock embeddings",
+                    error=str(e),
+                )
+                return self._get_mock_embeddings(texts)
         elif self.provider == "ollama":
-            return await self._get_ollama_embeddings(texts)
+            try:
+                return await self._get_ollama_embeddings(texts)
+            except Exception as e:
+                logger.warning(
+                    "Ollama embeddings provider failed; falling back to local mock embeddings",
+                    error=str(e),
+                )
+                return self._get_mock_embeddings(texts)
         else:
             return self._get_mock_embeddings(texts)
 

@@ -13,6 +13,7 @@ from app.services.profile import CandidateProfileService
 router = APIRouter(prefix="/profile", tags=["Candidate Profile"])
 
 
+@router.get("", response_model=CandidateProfileResponse)
 @router.get("/", response_model=CandidateProfileResponse)
 async def get_profile(
     current_user: User = Depends(get_current_active_user),
@@ -23,6 +24,7 @@ async def get_profile(
     return await service.get_by_user_id(current_user.id)
 
 
+@router.put("", response_model=CandidateProfileResponse)
 @router.put("/", response_model=CandidateProfileResponse)
 async def update_profile(
     profile_in: CandidateProfileUpdate,
