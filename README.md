@@ -115,3 +115,27 @@ npm run dev
 ```
 Open [http://localhost:5173/](http://localhost:5173/) in your browser.
 
+---
+
+## Production Deployment to Azure Container Apps
+
+BobAgent includes an automated **Infrastructure as Code (Bicep)** setup and **GitHub Actions CI/CD pipeline** targeting **Azure Container Apps** with containerized **PostgreSQL + pgvector**, **Redis**, and **Ollama (`llama3:latest`)**.
+
+### Automated CI/CD (GitHub Actions)
+1. Generate an Azure Service Principal with Contributor access:
+   ```bash
+   az ad sp create-for-rbac --name "sp-bobagent-github" --role "Contributor" --scopes "/subscriptions/<SUBSCRIPTION_ID>" --sdk-auth
+   ```
+2. Add GitHub Repository Secrets under **Settings -> Secrets and variables -> Actions**:
+   - `AZURE_CREDENTIALS`: Entire JSON output from above command
+   - `AZURE_SUBSCRIPTION_ID`: Your Azure Subscription ID GUID
+3. Push to `main` or manually trigger the **Deploy BobAgent to Azure Container Apps** workflow.
+
+### Local One-Click Deployment (PowerShell)
+```powershell
+az login
+.\infra\azure\deploy.ps1 -ResourceGroup "rg-bobagent-prod" -Location "eastus"
+```
+
+For full architecture diagrams and operational telemetry, see [docs/deployment.md](docs/deployment.md).
+
