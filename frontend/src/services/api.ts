@@ -311,6 +311,63 @@ class ApiService {
     if (!res.ok) throw new Error('Failed to delete application');
   }
 
+  // LangGraph Multi-Agent Studio
+  async runAgent(payload: import('../types/agent').AgentRunRequest): Promise<import('../types/agent').AgentRunResponse> {
+    const res = await fetch(`${API_BASE}/agents/run`, {
+      method: 'POST',
+      headers: this.getHeaders(),
+      body: JSON.stringify(payload),
+    });
+    if (!res.ok) {
+      const err = await res.json().catch(() => ({}));
+      throw new Error(err.detail || 'Agent execution failed');
+    }
+    return res.json();
+  }
+
+  // Adaptive Interview Simulator
+  async startInterviewSession(
+    payload: import('../types/interview').InterviewStartRequest
+  ): Promise<import('../types/interview').InterviewSessionResponse> {
+    const res = await fetch(`${API_BASE}/interview/sessions`, {
+      method: 'POST',
+      headers: this.getHeaders(),
+      body: JSON.stringify(payload),
+    });
+    if (!res.ok) {
+      const err = await res.json().catch(() => ({}));
+      throw new Error(err.detail || 'Failed to start interview session');
+    }
+    return res.json();
+  }
+
+  async evaluateAnswer(
+    payload: import('../types/interview').InterviewAnswerRequest
+  ): Promise<import('../types/interview').AnswerEvaluationResponse> {
+    const res = await fetch(`${API_BASE}/interview/evaluate`, {
+      method: 'POST',
+      headers: this.getHeaders(),
+      body: JSON.stringify(payload),
+    });
+    if (!res.ok) {
+      const err = await res.json().catch(() => ({}));
+      throw new Error(err.detail || 'Answer evaluation failed');
+    }
+    return res.json();
+  }
+
+  // Evaluation & Career Analytics
+  async getAnalyticsDashboard(): Promise<import('../types/eval').AnalyticsDashboardResponse> {
+    const res = await fetch(`${API_BASE}/eval/dashboard`, {
+      headers: this.getHeaders(),
+    });
+    if (!res.ok) {
+      const err = await res.json().catch(() => ({}));
+      throw new Error(err.detail || 'Failed to fetch analytics metrics');
+    }
+    return res.json();
+  }
+
   logout() {
     this.setToken(null);
   }

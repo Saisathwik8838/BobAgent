@@ -66,6 +66,27 @@ The frontend is consolidated on **React 18 + TypeScript + Vite + Tailwind CSS** 
   - `DELETE /api/v1/applications/{id}` — Remove application from pipeline
 - **Interactive UI**: Located at `/applications` with live Kanban board, quick stage progression buttons, stats bar, and audit timeline drawer.
 
+### 5. LangGraph Multi-Agent Studio (Section 3.5)
+- **Pipeline**: Autonomous multi-agent orchestration for Job Scouting, Application Assistant, and Interview Prep Coach with strict tool allow-lists and step-by-step execution traces.
+- **Anti-Hallucination Guardrails**: Output evaluation judge validates 100% groundedness against pgvector candidate evidence before presenting pitches or cover letters.
+- **REST Endpoints**:
+  - `POST /api/v1/agents/run` — Run specialized agent workflow with step-by-step trace auditing
+- **Interactive UI**: Located at `/agents` with agent action cards, target job selector, live execution trace timeline, copy-to-clipboard pitch deliverables, and citation breakdown.
+
+### 6. Adaptive Interview Simulator (Section 3.6)
+- **Pipeline**: Interactive practice sessions formulated from target job posting requirements and candidate project background.
+- **Scoring Rubric**: Multi-criteria evaluation judging candidate answers on Correctness, Clarity, and Architectural Depth, identifying missing concepts with actionable advice.
+- **REST Endpoints**:
+  - `POST /api/v1/interview/sessions` — Initialize scenario-based interview session
+  - `POST /api/v1/interview/evaluate` — Submit answer for real-time criteria assessment and scoring
+- **Interactive UI**: Located at `/interview` with role/difficulty configuration, real-time question prompt cards, sample high-signal answer helper, criteria score meters, and prior question history.
+
+### 7. Evaluation & Career Analytics (Section 3.7)
+- **Pipeline**: Real-time aggregation of candidate application pipeline conversion funnels, pgvector retrieval latencies, Redis cache hit ratios, and zero-fabrication metrics.
+- **REST Endpoints**:
+  - `GET /api/v1/eval/dashboard` — Complete career intelligence and groundedness telemetry
+- **Interactive UI**: Located at `/eval` with funnel progress bars, groundedness integrity badge, telemetry counters, and market skill demand matrix.
+
 ---
 
 ## Quickstart / Running Locally
