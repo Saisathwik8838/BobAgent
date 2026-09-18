@@ -1,7 +1,7 @@
 """Service layer for Applications Pipeline."""
 
 import uuid
-from datetime import datetime, timezone
+from datetime import UTC, datetime
 
 from fastapi import HTTPException, status
 from sqlalchemy.ext.asyncio import AsyncSession
@@ -31,7 +31,7 @@ class ApplicationService:
 
         applied_date = app_in.applied_date
         if app_in.status == "applied" and not applied_date:
-            applied_date = datetime.now(timezone.utc)
+            applied_date = datetime.now(UTC)
 
         app_obj = Application(
             candidate_id=candidate_id,
@@ -92,7 +92,7 @@ class ApplicationService:
             new_status = update_in.status.lower()
             app_obj.status = new_status
             if new_status == "applied" and not app_obj.applied_date:
-                app_obj.applied_date = datetime.now(timezone.utc)
+                app_obj.applied_date = datetime.now(UTC)
             events_to_add.append(
                 ApplicationEvent(
                     application_id=app_obj.id,

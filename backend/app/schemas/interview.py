@@ -1,7 +1,6 @@
 """Pydantic schemas for Adaptive Interview Simulator."""
 
 import uuid
-from typing import Any
 
 from pydantic import BaseModel, Field
 

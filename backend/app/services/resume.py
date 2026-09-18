@@ -51,7 +51,7 @@ class ResumeService:
                     metadata={"resume_id": str(created.id)},
                 ),
             )
-        except Exception as e:  # noqa: BLE001
+        except Exception as e:
             from app.core.logging import logger
             logger.warning("RAG vector ingestion failed", error=str(e))
 

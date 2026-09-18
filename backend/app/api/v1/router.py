@@ -6,13 +6,15 @@ from app.api.v1.endpoints import (
     agents,
     applications,
     auth,
-    eval as eval_router,
     health,
     interview,
     jobs,
     profile,
     rag,
     resumes,
+)
+from app.api.v1.endpoints import (
+    eval as eval_router,
 )
 
 api_router = APIRouter()

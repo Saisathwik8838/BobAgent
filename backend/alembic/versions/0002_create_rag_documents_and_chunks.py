@@ -5,16 +5,18 @@ Revises: 0001_initial_users_and_profiles
 Create Date: 2026-09-17 22:20:00.000000
 
 """
-from typing import Sequence, Union
-from alembic import op
+from collections.abc import Sequence
+
 import sqlalchemy as sa
 from pgvector.sqlalchemy import Vector
 
+from alembic import op
+
 # revision identifiers, used by Alembic.
 revision: str = "0002_create_rag_docs"
-down_revision: Union[str, None] = "0001_initial_users_and_profiles"
-branch_labels: Union[str, Sequence[str], None] = None
-depends_on: Union[str, Sequence[str], None] = None
+down_revision: str | None = "0001_initial_users_and_profiles"
+branch_labels: str | Sequence[str] | None = None
+depends_on: str | Sequence[str] | None = None
 
 
 def upgrade() -> None:

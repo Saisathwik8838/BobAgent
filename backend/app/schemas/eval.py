@@ -1,6 +1,5 @@
 """Pydantic schemas for Evaluation & Career Analytics."""
 
-from typing import Any
 from pydantic import BaseModel
 
 
