@@ -28,9 +28,11 @@ param(
     [switch]$Deploy
 )
 
-$ErrorActionPreference = "Stop"
+# 1. Clean and validate VM IP
+$VmIp = $VmIp.Trim().Trim('<', '>').Trim()
+Write-Host "Target VM IP: $VmIp" -ForegroundColor Cyan
 
-# 1. Resolve PEM path
+# 2. Resolve PEM path
 $resolvedPem = Resolve-Path $PemPath -ErrorAction Stop
 Write-Host "Using SSH Key: $resolvedPem" -ForegroundColor Cyan
 
