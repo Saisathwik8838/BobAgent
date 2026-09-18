@@ -12,7 +12,7 @@ import {
   BarChart3,
 } from 'lucide-react';
 
-export const Sidebar: React.FC = () => {
+export const Sidebar = () => {
   const navItems = [
     { to: '/dashboard', label: 'Dashboard', icon: LayoutDashboard, tag: 'Overview' },
     { to: '/profile', label: 'Candidate Profile', icon: UserCheck, tag: 'Baseline' },
@@ -26,9 +26,9 @@ export const Sidebar: React.FC = () => {
   ];
 
   return (
-    <aside className="w-64 border-r border-slate-800 bg-slate-950/50 flex flex-col justify-between p-4 min-h-[calc(100vh-4rem)]">
-      <div className="space-y-1">
-        <div className="px-3 py-2 text-[11px] font-semibold uppercase tracking-wider text-slate-500">
+    <aside style={{ width: '250px', borderRight: '1px solid var(--border-subtle)', backgroundColor: 'rgba(3, 7, 18, 0.6)', display: 'flex', flexDirection: 'column', justifyContent: 'space-between', padding: '1rem', minHeight: 'calc(100vh - 64px)' }}>
+      <div style={{ display: 'flex', flexDirection: 'column', gap: '0.25rem' }}>
+        <div style={{ padding: '0.5rem 0.75rem', fontSize: '0.6875rem', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.08em', color: 'var(--text-dim)' }}>
           Navigation
         </div>
         {navItems.map((item) => {
@@ -37,25 +37,15 @@ export const Sidebar: React.FC = () => {
             <NavLink
               key={item.to}
               to={item.to}
-              className={({ isActive }) =>
-                `w-full flex items-center justify-between px-3 py-2.5 rounded-xl text-sm font-medium transition-all ${
-                  isActive
-                    ? 'bg-indigo-600/15 text-indigo-300 border border-indigo-500/30 shadow-sm shadow-indigo-500/10'
-                    : 'text-slate-400 hover:text-slate-200 hover:bg-slate-900/60'
-                }`
-              }
+              className={({ isActive }) => `nav-link ${isActive ? 'active' : ''}`}
             >
               {({ isActive }) => (
                 <>
-                  <div className="flex items-center space-x-3">
-                    <Icon className={`w-4 h-4 ${isActive ? 'text-indigo-400' : 'text-slate-400'}`} />
+                  <div className="nav-link-left">
+                    <Icon className="nav-icon" style={{ width: '16px', height: '16px' }} />
                     <span>{item.label}</span>
                   </div>
-                  <span
-                    className={`text-[10px] px-1.5 py-0.5 rounded font-mono ${
-                      isActive ? 'bg-indigo-500/20 text-indigo-300' : 'text-slate-600 bg-slate-900'
-                    }`}
-                  >
+                  <span className={`badge ${isActive ? 'badge-indigo' : 'badge-slate'}`} style={{ fontSize: '0.625rem', padding: '0.15rem 0.4rem' }}>
                     {item.tag}
                   </span>
                 </>
@@ -65,13 +55,13 @@ export const Sidebar: React.FC = () => {
         })}
       </div>
 
-      <div className="pt-4 border-t border-slate-900 px-3">
-        <div className="p-3 rounded-xl bg-slate-900/60 border border-slate-800 text-xs text-slate-400 space-y-1">
-          <div className="font-semibold text-slate-200 flex items-center justify-between">
+      <div style={{ paddingTop: '1rem', borderTop: '1px solid var(--border-subtle)', paddingLeft: '0.5rem', paddingRight: '0.5rem' }}>
+        <div className="glass-panel" style={{ padding: '0.75rem', borderRadius: 'var(--radius-lg)', fontSize: '0.75rem', display: 'flex', flexDirection: 'column', gap: '0.35rem' }}>
+          <div style={{ fontWeight: 600, color: '#ffffff', display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
             <span>Operating Contract</span>
-            <span className="w-1.5 h-1.5 rounded-full bg-emerald-400"></span>
+            <span style={{ width: '6px', height: '6px', borderRadius: '50%', backgroundColor: 'var(--emerald)' }}></span>
           </div>
-          <p className="text-[11px] text-slate-400 leading-relaxed">
+          <p style={{ fontSize: '0.6875rem', color: 'var(--text-muted)', lineHeight: 1.4 }}>
             All AI generations require verifiable candidate evidence retrieved via pgvector.
           </p>
         </div>

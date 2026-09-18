@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
 import { api } from './services/api';
-import { User, CandidateProfile, AuthResponse } from './types/auth';
 import { Layout } from './components/Layout';
 import { Dashboard } from './pages/Dashboard';
 import { Profile } from './pages/Profile';
@@ -16,12 +15,12 @@ import { Login } from './pages/Login';
 import { Register } from './pages/Register';
 import { Sparkles } from 'lucide-react';
 
-export const App: React.FC = () => {
-  const [user, setUser] = useState<User | null>(null);
-  const [profile, setProfile] = useState<CandidateProfile | null>(null);
-  const [authView, setAuthView] = useState<'login' | 'register'>('login');
-  const [systemHealthy, setSystemHealthy] = useState<boolean>(false);
-  const [loading, setLoading] = useState<boolean>(true);
+export const App = () => {
+  const [user, setUser] = useState(null);
+  const [profile, setProfile] = useState(null);
+  const [authView, setAuthView] = useState('login');
+  const [systemHealthy, setSystemHealthy] = useState(false);
+  const [loading, setLoading] = useState(true);
 
   // Initialize and check health & auth
   useEffect(() => {
@@ -55,7 +54,7 @@ export const App: React.FC = () => {
     initApp();
   }, []);
 
-  const handleAuthSuccess = async (auth: AuthResponse) => {
+  const handleAuthSuccess = async (auth) => {
     setUser(auth.user);
     try {
       const prof = await api.getProfile();
@@ -74,11 +73,11 @@ export const App: React.FC = () => {
 
   if (loading) {
     return (
-      <div className="min-h-screen bg-slate-950 flex flex-col items-center justify-center space-y-4 text-slate-300">
-        <div className="w-12 h-12 rounded-2xl bg-indigo-600/20 border border-indigo-500/30 flex items-center justify-center text-indigo-400 animate-pulse">
-          <Sparkles className="w-6 h-6" />
+      <div style={{ minHeight: '100vh', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', gap: '1rem', color: '#94a3b8' }}>
+        <div style={{ width: '48px', height: '48px', borderRadius: '1rem', background: 'rgba(99, 102, 241, 0.15)', border: '1px solid rgba(99, 102, 241, 0.3)', display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#6366f1' }}>
+          <Sparkles style={{ width: '24px', height: '24px' }} />
         </div>
-        <p className="text-sm font-medium">Initializing BobAgent...</p>
+        <p style={{ fontSize: '0.875rem', fontWeight: 500 }}>Initializing BobAgent...</p>
       </div>
     );
   }
